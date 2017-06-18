@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>avalon</title>
+</head>
+
+<body>
+    <div ms-controller="app">
+        <ms-hashrouter>
+            <h1>avalon</h1>
+            <ms-navlink ms-widget="{to:'/page1'}">page1</ms-navlink>
+            <ms-navlink ms-widget="{to:'/page2'}">page2</ms-navlink>
+            <div>
+                <ms-route ms-widget="{path:'/page1',component:'ms-page1'}" />
+                <ms-route ms-widget="{path:'/page2',component:'ms-page2'}" />
+            </div>
+        </ms-hashrouter>
+    </div>
+<script type="text/javascript" src="bundle.js"></script></body>
+
+</html>
