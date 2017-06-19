@@ -5,12 +5,11 @@ import Router from '../router';
 component('ms-navlink', {
     template: `
         <a class="nav-link" ms-attr="{href:getHref(to)}" ms-click="click" ms-css="styles">
-            <span><slot /></span>
+            <span ms-attr="{id:'text'+$id}"><slot /></span>
         </a>
         `,
     defaults: {
-        styles: {
-        },
+        styles: {},
         to: '',
         getHref(to) {
             return '#' + to;

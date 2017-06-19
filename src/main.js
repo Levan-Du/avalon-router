@@ -1,9 +1,17 @@
 import avalon, { define, component } from 'avalon2';
 import './routes';
+import './index.css';
 
 
 component('ms-page1', {
-    template: '<div style="background: #a28;height: 100%;">page1</div>',
+    template: `
+    <div style="background: #a28;height: 100%;">
+        <h1>page1</h1>
+        <div>
+            <input type="text" />
+        </div>
+    </div>
+    `,
     defaults: {
         query: {},
         queryString: '',
@@ -14,7 +22,14 @@ component('ms-page1', {
 });
 
 component('ms-page2', {
-    template: '<div style="background: #3e8;height: 100%;">page2</div>',
+    template: `
+    <div style="background: #e91;height: 100%;">
+        <h1>page2</h1>
+        <div>
+            <input type="text" />
+        </div>
+    </div>
+    `,
     defaults: {
         query: {},
         onReady(e) {
@@ -33,6 +48,42 @@ component('ms-page3', {
     }
 });
 
+component('ms-menu', {
+    template: `
+    <ul>
+        <li ms-for="item in items">
+            <ms-navlink ms-widget="{to:item.path}">{{item.title}}</ms-navlink>
+        </li>
+    </ul>
+    `,
+    defaults: {
+        items: [
+            { id: 1, title: 'page1', path: '/page1', pid: 0 },
+            { id: 2, title: 'page2', path: '/page2', pid: 0 },
+            { id: 3, title: 'page3', path: '/page3', pid: 0 }
+        ],
+        click(e, data) {
+
+        },
+        onReady(e) {
+
+        }
+    }
+});
+
+component('ms-tab', {
+    template: `
+    <ul class="tab clearfix">
+        <li style="float:left;">
+            <ms-navlink ms-widget="{to:'/page1?id=1'}">page1</ms-navlink>
+        </li>
+    </ul>
+    `,
+    defaults: {
+
+    }
+})
+
 define({
-    $id: 'app'
+    $id: 'app',
 });

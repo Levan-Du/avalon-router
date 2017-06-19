@@ -16,8 +16,10 @@ component('ms-route', {
         component: '',
         visible: false,
         visibleComponent: '',
+        cached: true,
         query: {},
         queryString: '',
+        childRoute: '',
         onInit(e) {
             var _this = this;
 
@@ -29,11 +31,18 @@ component('ms-route', {
                 _this.query = Router.getQuery() || {};
 
                 _this.visible = true;
-                _this.visibleComponent = '<' + _this.component + ' ms-widget="{id:\'' + _this.component + _this.$id.replace('ms-route', '') + '\',query:query,queryString:queryString}" />';
+                var vc = '<' + _this.component + ' ms-widget="{query:query,queryString:queryString}" />';
+                if (!this.cached) {
+                    _this.visibleComponent = vc;
+                } else if (!_this.visibleComponent) {
+                    _this.visibleComponent = vc;
+                }
 
                 var currCompVmodel = routeComp.routes[routeComp.visiblePath];
                 if (currCompVmodel) {
-                    currCompVmodel.visibleComponent = '';
+                    if (!this.cached) {
+                        currCompVmodel.visibleComponent = '';
+                    }
                     currCompVmodel.visible = false;
                 }
 
@@ -43,5 +52,6 @@ component('ms-route', {
         onReady(e) {
 
         }
-    }
+    },
+    soleSlot: 'childRoute'
 })

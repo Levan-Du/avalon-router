@@ -1,0 +1,21 @@
+ul,
+li {
+    list-style: none;
+}
+
+.clearfix:after {
+    content: "";
+    display: block;
+    height: 0;
+    visibility: hidden;
+    clear: both;
+}
+
+.tab {
+    height: 40px;
+    line-height: 40px;
+}
+
+.tab li {
+    margin: 0 10px;
+}

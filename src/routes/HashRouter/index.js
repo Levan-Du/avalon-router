@@ -28,7 +28,12 @@ component('ms-hashrouter', {
                     routeVmodel.queryString = Router.query;
                     routeVmodel.query = Router.getQuery() || {};
                     routeVmodel.visible = true;
-                    routeVmodel.visibleComponent = '<' + routeVmodel.component + ' ms-widget="{id:\'' + routeVmodel.component + this.$id.replace('ms-route', '') + '\',query:query,queryString:queryString}" />';
+                    var vc = '<' + routeVmodel.component + ' ms-widget="{query:query,queryString:queryString}" />';
+                    if (!routeVmodel.cached) {
+                        routeVmodel.visibleComponent = vc;
+                    } else if (!routeVmodel.visibleComponent) {
+                        routeVmodel.visibleComponent = vc;
+                    }
                 }
             });
             this.visiblePath = visiblePath;
