@@ -19157,6 +19157,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
                     routeVmodel.queryString = _router2.default.query;
                     routeVmodel.query = _router2.default.getQuery() || {};
                     routeVmodel.visible = true;
+                    routeVmodel.aniAction = 'enter';
                     var vc = '<' + routeVmodel.component + ' ms-widget="{query:query,queryString:queryString}" />';
                     if (!routeVmodel.cached) {
                         routeVmodel.visibleComponent = vc;
@@ -19249,8 +19250,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         onInit: function onInit(e) {
             var _this = this;
 
-            _this.aniAction = 'enter';
-
             var routeComp = _router2.default.routerComponent;
             routeComp.routes[_this.path] = e.vmodel;
 
@@ -19283,6 +19282,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         onDispose: function onDispose(e) {}
     },
     soleSlot: 'childRoute'
+});
+
+_avalon2.default.effect('fade', {
+    enter: function enter(el, done) {
+        $(el).fadeIn('fast', done);
+    },
+    leave: function leave(el, done) {
+        $(el).fadeOut('fast', done);
+    }
 });
 
 _avalon2.default.effect('fade', {

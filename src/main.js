@@ -1,7 +1,7 @@
 import avalon, { define, component } from 'avalon2';
-import './routes';
 import './index.css';
-
+import './routes';
+import Router from './routes/router';
 
 component('ms-page1', {
     template: `
@@ -89,3 +89,6 @@ define({
     $id: 'app',
     aaa: '<aaa>aaaaa</aaa>'
 });
+
+
+avalon.scan(document.getElementById('app'));

@@ -25,10 +25,10 @@ component('ms-route', {
         animation: 'fade',
         aniAction: 'leave',
         aniActionEnter() {
-            console.log('ani enter');
+            avalon.log('ani enter');
         },
         aniActionLeave() {
-            console.log('ani leave');
+            avalon.log('ani leave');
         },
         onInit(e) {
             var _this = this;
