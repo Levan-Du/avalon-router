@@ -4,13 +4,15 @@ import Router from '../router';
 
 component('ms-route', {
     template: `
-        <div ms-attr="{id:$id}" ms-css="styles" ms-html="visibleComponent" ms-visible="visible">
+        <div ms-attr="{id:$id}" ms-css="styles" ms-html="visibleComponent"
+            ms-effect="{is:'fade',action:aniAction,onEnterDone:aniActionEnter,onLeaveDone:aniActionLeave}">
         </div>
         `,
     defaults: {
         styles: {
             width: '100%',
-            height: '100%'
+            height: '100%',
+            display: 'none'
         },
         path: '',
         component: '',
@@ -20,15 +22,17 @@ component('ms-route', {
         query: {},
         queryString: '',
         childRoute: '',
-        aniAction: 'enter',
-        aniActionEnter(){
-            console.log('ani finish');
+        aniAction: 'leave',
+        aniActionEnter() {
+            console.log('ani enter');
         },
-        aniActionLeave(){
-            console.log('ani back');
+        aniActionLeave() {
+            console.log('ani leave');
         },
         onInit(e) {
             var _this = this;
+
+            _this.aniAction = 'enter';
 
             var routeComp = Router.routerComponent;
             routeComp.routes[_this.path] = e.vmodel;
@@ -39,16 +43,19 @@ component('ms-route', {
 
                 var currCompVmodel = routeComp.routes[routeComp.visiblePath];
                 if (currCompVmodel) {
-                    if (!this.cached) {
+                    if (!_this.cached) {
                         currCompVmodel.visibleComponent = '';
                     }
                     currCompVmodel.visible = false;
+                    currCompVmodel.styles.display = 'none';
+                    currCompVmodel.aniAction = 'leave';
                 }
 
                 routeComp.visiblePath = _this.path;
                 _this.visible = true;
+                _this.aniAction = 'enter';
                 var vc = '<' + _this.component + ' ms-widget="{query:query,queryString:queryString}" />';
-                if (!this.cached) {
+                if (!_this.cached) {
                     _this.visibleComponent = vc;
                 } else if (!_this.visibleComponent) {
                     _this.visibleComponent = vc;
@@ -57,16 +64,17 @@ component('ms-route', {
         },
         onReady(e) {
 
-        }
+        },
+        onDispose(e) {}
     },
     soleSlot: 'childRoute'
 })
 
 avalon.effect('fade', {
     enter: function(el, done) {
-        $(el).fadeIn();
+        $(el).fadeIn('fast', done);
     },
     leave: function(el, done) {
-        $(el).fadeOut();
+        $(el).fadeOut('fast', done);
     }
 })

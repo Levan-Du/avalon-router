@@ -16,13 +16,14 @@ component('ms-hashrouter', {
             Router.routerComponent = e.vmodel;
         },
         onReady(e) {
+            var _this = this;
             var urlsplits = Router.currentUrl.match(/\/\w+/g),
                 visiblePath = '',
                 path = '';
             if (!urlsplits) return;
             urlsplits.forEach(el => {
                 path += el;
-                var routeVmodel = this.routes[path];
+                var routeVmodel = _this.routes[path];
                 if (routeVmodel) {
                     visiblePath = path;
                     routeVmodel.queryString = Router.query;
@@ -36,7 +37,7 @@ component('ms-hashrouter', {
                     }
                 }
             });
-            this.visiblePath = visiblePath;
+            _this.visiblePath = visiblePath;
         },
         onViewChange(e) {}
     },

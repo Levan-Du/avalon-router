@@ -11,19 +11,21 @@ class Router {
     }
 
     refresh() {
+        var _this = this;
+
         var url = location.hash.slice(1) || '/';
         var index = url.indexOf('?');
         index = index < 0 ? url.length : index;
-        this.currentUrl = url.substr(0, index);
-        this.query = url.substr(index + 1, url.length) || '';
+        _this.currentUrl = url.substr(0, index);
+        _this.query = url.substr(index + 1, url.length) || '';
 
-        var urlsplits = this.currentUrl.match(/\/\w+/g),
+        var urlsplits = _this.currentUrl.match(/\/\w+/g),
             visiblePath = '',
             path = '';
         if (!urlsplits) return;
         urlsplits.forEach(el => {
             path += el;
-            var cb = this.routes[path];
+            var cb = _this.routes[path];
             cb && cb();
         });
     }

@@ -19085,7 +19085,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 (0, _avalon.component)('ms-page3', {
-    template: '<div style="background: #e81;height: 100%;">page3</div>',
+    template: '<div style="background: #81f;height: 100%;">page3</div>',
     defaults: {
         query: {},
         onReady: function onReady(e) {
@@ -19224,11 +19224,12 @@ var _router2 = _interopRequireDefault(_router);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (0, _avalon.component)('ms-route', {
-    template: '\n        <div ms-attr="{id:$id}" ms-css="styles" ms-html="visibleComponent" ms-visible="visible" \n            ms-effect="{is:\'fade\',action:@action}">\n        </div>\n        ',
+    template: '\n        <div ms-attr="{id:$id}" ms-css="styles" ms-html="visibleComponent"\n            ms-effect="{is:\'fade\',action:aniAction,onEnterDone:aniActionEnter,onLeaveDone:aniActionLeave}">\n        </div>\n        ',
     defaults: {
         styles: {
             width: '100%',
-            height: '100%'
+            height: '100%',
+            display: 'none'
         },
         path: '',
         component: '',
@@ -19239,6 +19240,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         queryString: '',
         childRoute: '',
         aniAction: 'enter',
+        aniActionEnter: function aniActionEnter() {
+            console.log('ani finish');
+        },
+        aniActionLeave: function aniActionLeave() {
+            console.log('ani back');
+        },
         onInit: function onInit(e) {
             var _this2 = this;
 
@@ -19251,14 +19258,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
                 _this.queryString = _router2.default.query;
                 _this.query = _router2.default.getQuery() || {};
 
-                _this.visible = true;
-                var vc = '<' + _this.component + ' ms-widget="{query:query,queryString:queryString}" />';
-                if (!_this2.cached) {
-                    _this.visibleComponent = vc;
-                } else if (!_this.visibleComponent) {
-                    _this.visibleComponent = vc;
-                }
-
                 var currCompVmodel = routeComp.routes[routeComp.visiblePath];
                 if (currCompVmodel) {
                     if (!_this2.cached) {
@@ -19268,6 +19267,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
                 }
 
                 routeComp.visiblePath = _this.path;
+                _this.visible = true;
+                var vc = '<' + _this.component + ' ms-widget="{query:query,queryString:queryString}" />';
+                if (!_this2.cached) {
+                    _this.visibleComponent = vc;
+                } else if (!_this.visibleComponent) {
+                    _this.visibleComponent = vc;
+                }
             });
         },
         onReady: function onReady(e) {}
