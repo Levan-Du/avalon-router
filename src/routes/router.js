@@ -19,15 +19,15 @@ class Router {
         _this.currentUrl = url.substr(0, index);
         _this.query = url.substr(index + 1, url.length) || '';
 
-        var urlsplits = _this.currentUrl.match(/\/\w+/g),
-            visiblePath = '',
-            path = '';
-        if (!urlsplits) return;
-        urlsplits.forEach(el => {
-            path += el;
-            var cb = _this.routes[path];
+        // var urlsplits = _this.currentUrl.match(/\/[\w-]+/g),
+        //     visiblePath = '',
+        //     path = '';
+        // if (!urlsplits) return;
+        // urlsplits.forEach(el => {
+        //     path += el;
+            var cb = _this.routes[_this.currentUrl];
             cb && cb();
-        });
+        // });
     }
 
     describe(listener) {

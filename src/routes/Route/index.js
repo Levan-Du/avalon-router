@@ -25,10 +25,9 @@ component('ms-route', {
         animation: 'fade',
         aniAction: 'leave',
         aniActionEnter() {
-            avalon.log('ani enter');
+
         },
         aniActionLeave() {
-            avalon.log('ani leave');
         },
         onInit(e) {
             var _this = this;
@@ -37,36 +36,74 @@ component('ms-route', {
             routeComp.routes[_this.path] = e.vmodel;
 
             Router.route(_this.path, () => {
-                _this.queryString = Router.query;
-                _this.query = Router.getQuery() || {};
+                var urlsplits1 = routeComp.visiblePath.match(/\/[\w-]+/g),
+                    path1 = '';
+                if (urlsplits1) {
+                    urlsplits1.forEach(el => {
+                        path1 += el;
+                        var routeVmodel = routeComp.routes[path1];
+                        if (routeVmodel) {
+                            if (!routeVmodel.cached) {
+                                routeVmodel.visibleComponent = '';
+                            }
+                            routeVmodel.visible = false;
+                            routeVmodel.styles.display = 'none';
+                            routeVmodel.aniAction = 'leave';
+                        }
+                    });
+                }
 
-                var currCompVmodel = routeComp.routes[routeComp.visiblePath];
-                if (currCompVmodel) {
-                    if (!_this.cached) {
-                        currCompVmodel.visibleComponent = '';
+                var urlsplits = Router.currentUrl.match(/\/[\w-]+/g),
+                    visiblePath = '',
+                    path = '';
+                if (!urlsplits) return;
+                urlsplits.forEach(el => {
+                    path += el;
+                    var routeVmodel = routeComp.routes[path];
+                    if (routeVmodel) {
+                        visiblePath = path;
+                        routeVmodel.queryString = Router.query;
+                        routeVmodel.query = Router.getQuery() || {};
+                        routeVmodel.visible = true;
+                        routeVmodel.aniAction = 'enter';
+                        var vc = '<' + routeVmodel.component + ' ms-widget="{query:query,queryString:queryString}" />';
+                        if (!routeVmodel.cached) {
+                            routeVmodel.visibleComponent = vc;
+                        } else if (!routeVmodel.visibleComponent) {
+                            routeVmodel.visibleComponent = vc;
+                        }
                     }
-                    currCompVmodel.visible = false;
-                    currCompVmodel.styles.display = 'none';
-                    currCompVmodel.aniAction = 'leave';
-                }
-
-                routeComp.visiblePath = _this.path;
-                _this.visible = true;
-                _this.aniAction = 'enter';
-                var vc = '<' + _this.component + ' ms-widget="{query:query,queryString:queryString}" />';
-                if (!_this.cached) {
-                    _this.visibleComponent = vc;
-                } else if (!_this.visibleComponent) {
-                    _this.visibleComponent = vc;
-                }
+                });
+                routeComp.visiblePath = visiblePath;
             });
         },
         onReady(e) {
-
+            var routeComp = Router.routerComponent;
+            var urlsplits = Router.currentUrl.match(/\/[\w-]+/g),
+                visiblePath = '',
+                path = '';
+            if (!urlsplits) return;
+            urlsplits.forEach(el => {
+                path += el;
+                var routeVmodel = routeComp.routes[path];
+                if (routeVmodel) {
+                    visiblePath = path;
+                    routeVmodel.queryString = Router.query;
+                    routeVmodel.query = Router.getQuery() || {};
+                    routeVmodel.visible = true;
+                    routeVmodel.aniAction = 'enter';
+                    var vc = '<' + routeVmodel.component + ' ms-widget="{query:query,queryString:queryString}" />';
+                    if (!routeVmodel.cached) {
+                        routeVmodel.visibleComponent = vc;
+                    } else if (!routeVmodel.visibleComponent) {
+                        routeVmodel.visibleComponent = vc;
+                    }
+                }
+            });
+            routeComp.visiblePath = visiblePath;
         },
         onDispose(e) {}
-    },
-    soleSlot: 'childRoute'
+    }
 })
 
 avalon.effect('fade', {

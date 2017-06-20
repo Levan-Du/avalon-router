@@ -8,7 +8,24 @@ component('ms-page1', {
     <div style="background: #a28;height: 100%;">
         <h1>page1</h1>
         <div>
-            <input type="text" />
+            <ms-route ms-widget="{path:'/page1/page-1',component:'ms-page1-1'}"></ms-route>
+        </div>
+    </div>
+    `,
+    defaults: {
+        query: {},
+        queryString: '',
+        onReady(e) {
+            // console.log(this.queryString);
+        }
+    }
+});
+component('ms-page1-1', {
+    template: `
+    <div style="background: #a28;height: 100%;">
+        <h1>page1-1</h1>
+        <div>
+        page1-1page1-1page1-1page1-1page1-1
         </div>
     </div>
     `,
@@ -60,7 +77,8 @@ component('ms-menu', {
         items: [
             { id: 1, title: 'page1', path: '/page1', pid: 0 },
             { id: 2, title: 'page2', path: '/page2', pid: 0 },
-            { id: 3, title: 'page3', path: '/page3', pid: 0 }
+            { id: 3, title: 'page3', path: '/page3', pid: 0 },
+            { id: 4, title: 'page1-1', path: '/page1/page-1', pid: 0 }
         ],
         click(e, data) {
 
@@ -83,7 +101,6 @@ component('ms-tab', {
 
     }
 })
-
 
 define({
     $id: 'app',

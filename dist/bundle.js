@@ -71,6 +71,93 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Router = function () {
+    function Router() {
+        _classCallCheck(this, Router);
+
+        this.routes = {};
+        this.currentUrl = '';
+        this.query = '';
+        this.routerComponent = {};
+    }
+
+    _createClass(Router, [{
+        key: 'route',
+        value: function route(path, callback) {
+            this.routes[path] = callback || function () {};
+        }
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+            var _this = this;
+
+            var url = location.hash.slice(1) || '/';
+            var index = url.indexOf('?');
+            index = index < 0 ? url.length : index;
+            _this.currentUrl = url.substr(0, index);
+            _this.query = url.substr(index + 1, url.length) || '';
+
+            var urlsplits = _this.currentUrl.match(/\/\w+/g),
+                visiblePath = '',
+                path = '';
+            if (!urlsplits) return;
+            urlsplits.forEach(function (el) {
+                path += el;
+                var cb = _this.routes[path];
+                cb && cb();
+            });
+        }
+    }, {
+        key: 'describe',
+        value: function describe(listener) {}
+    }, {
+        key: 'redirect',
+        value: function redirect(path) {
+            location.hash = path;
+        }
+    }, {
+        key: 'init',
+        value: function init() {
+            window.addEventListener('load', this.refresh.bind(this), false);
+            window.addEventListener('hashchange', this.refresh.bind(this), false);
+        }
+    }, {
+        key: 'getQuery',
+        value: function getQuery() {
+            if (!this.query) {
+                return {};
+            };
+            var oo = {},
+                ss = this.query.split('=');
+            oo[ss[0]] = ss[1];
+            return oo;
+        }
+    }]);
+
+    return Router;
+}();
+
+var router = new Router();
+exports.default = router;
+
+
+router.init();
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(global) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -8115,93 +8202,6 @@ https://github.com/RubyLouvre/avalon/tree/2.2.4
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Router = function () {
-    function Router() {
-        _classCallCheck(this, Router);
-
-        this.routes = {};
-        this.currentUrl = '';
-        this.query = '';
-        this.routerComponent = {};
-    }
-
-    _createClass(Router, [{
-        key: 'route',
-        value: function route(path, callback) {
-            this.routes[path] = callback || function () {};
-        }
-    }, {
-        key: 'refresh',
-        value: function refresh() {
-            var _this = this;
-
-            var url = location.hash.slice(1) || '/';
-            var index = url.indexOf('?');
-            index = index < 0 ? url.length : index;
-            _this.currentUrl = url.substr(0, index);
-            _this.query = url.substr(index + 1, url.length) || '';
-
-            var urlsplits = _this.currentUrl.match(/\/\w+/g),
-                visiblePath = '',
-                path = '';
-            if (!urlsplits) return;
-            urlsplits.forEach(function (el) {
-                path += el;
-                var cb = _this.routes[path];
-                cb && cb();
-            });
-        }
-    }, {
-        key: 'describe',
-        value: function describe(listener) {}
-    }, {
-        key: 'redirect',
-        value: function redirect(path) {
-            location.hash = path;
-        }
-    }, {
-        key: 'init',
-        value: function init() {
-            window.addEventListener('load', this.refresh.bind(this), false);
-            window.addEventListener('hashchange', this.refresh.bind(this), false);
-        }
-    }, {
-        key: 'getQuery',
-        value: function getQuery() {
-            if (!this.query) {
-                return {};
-            };
-            var oo = {},
-                ss = this.query.split('=');
-            oo[ss[0]] = ss[1];
-            return oo;
-        }
-    }]);
-
-    return Router;
-}();
-
-var router = new Router();
-exports.default = router;
-
-
-router.init();
-
-/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8214,7 +8214,7 @@ __webpack_require__(12);
 
 __webpack_require__(11);
 
-__webpack_require__(1);
+__webpack_require__(0);
 
 /***/ }),
 /* 3 */
@@ -19053,13 +19053,17 @@ module.exports = function (module) {
 "use strict";
 
 
-var _avalon = __webpack_require__(0);
+var _avalon = __webpack_require__(1);
 
 var _avalon2 = _interopRequireDefault(_avalon);
 
+__webpack_require__(3);
+
 __webpack_require__(2);
 
-__webpack_require__(3);
+var _router = __webpack_require__(0);
+
+var _router2 = _interopRequireDefault(_router);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19108,10 +19112,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     defaults: {}
 });
 
+(0, _avalon.component)('ms-aaa', {
+    template: '<div><slot /></div>',
+    defaults: {
+        child: 'aaa'
+    },
+    soleSlot: 'child'
+});
+
 (0, _avalon.define)({
     $id: 'app',
     aaa: '<aaa>aaaaa</aaa>'
 });
+
+_avalon2.default.scan(document.getElementById('app'));
 
 /***/ }),
 /* 10 */
@@ -19120,11 +19134,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 "use strict";
 
 
-var _avalon = __webpack_require__(0);
+var _avalon = __webpack_require__(1);
 
 var _avalon2 = _interopRequireDefault(_avalon);
 
-var _router = __webpack_require__(1);
+var _router = __webpack_require__(0);
 
 var _router2 = _interopRequireDefault(_router);
 
@@ -19180,11 +19194,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 "use strict";
 
 
-var _avalon = __webpack_require__(0);
+var _avalon = __webpack_require__(1);
 
 var _avalon2 = _interopRequireDefault(_avalon);
 
-var _router = __webpack_require__(1);
+var _router = __webpack_require__(0);
 
 var _router2 = _interopRequireDefault(_router);
 
@@ -19213,11 +19227,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {
 
-var _avalon = __webpack_require__(0);
+var _avalon = __webpack_require__(1);
 
 var _avalon2 = _interopRequireDefault(_avalon);
 
-var _router = __webpack_require__(1);
+var _router = __webpack_require__(0);
 
 var _router2 = _interopRequireDefault(_router);
 
@@ -19242,10 +19256,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         animation: 'fade',
         aniAction: 'leave',
         aniActionEnter: function aniActionEnter() {
-            console.log('ani enter');
+            _avalon2.default.log('ani enter');
         },
         aniActionLeave: function aniActionLeave() {
-            console.log('ani leave');
+            _avalon2.default.log('ani leave');
         },
         onInit: function onInit(e) {
             var _this = this;

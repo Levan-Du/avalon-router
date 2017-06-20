@@ -16,29 +16,7 @@ component('ms-hashrouter', {
             Router.routerComponent = e.vmodel;
         },
         onReady(e) {
-            var _this = this;
-            var urlsplits = Router.currentUrl.match(/\/\w+/g),
-                visiblePath = '',
-                path = '';
-            if (!urlsplits) return;
-            urlsplits.forEach(el => {
-                path += el;
-                var routeVmodel = _this.routes[path];
-                if (routeVmodel) {
-                    visiblePath = path;
-                    routeVmodel.queryString = Router.query;
-                    routeVmodel.query = Router.getQuery() || {};
-                    routeVmodel.visible = true;
-                    routeVmodel.aniAction = 'enter';
-                    var vc = '<' + routeVmodel.component + ' ms-widget="{query:query,queryString:queryString}" />';
-                    if (!routeVmodel.cached) {
-                        routeVmodel.visibleComponent = vc;
-                    } else if (!routeVmodel.visibleComponent) {
-                        routeVmodel.visibleComponent = vc;
-                    }
-                }
-            });
-            _this.visiblePath = visiblePath;
+
         },
         onViewChange(e) {}
     },
