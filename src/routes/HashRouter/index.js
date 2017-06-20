@@ -29,6 +29,7 @@ component('ms-hashrouter', {
                     routeVmodel.queryString = Router.query;
                     routeVmodel.query = Router.getQuery() || {};
                     routeVmodel.visible = true;
+                    routeVmodel.aniAction = 'enter';
                     var vc = '<' + routeVmodel.component + ' ms-widget="{query:query,queryString:queryString}" />';
                     if (!routeVmodel.cached) {
                         routeVmodel.visibleComponent = vc;

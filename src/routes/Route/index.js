@@ -5,7 +5,7 @@ import Router from '../router';
 component('ms-route', {
     template: `
         <div ms-attr="{id:$id}" ms-css="styles" ms-html="visibleComponent"
-            ms-effect="{is:'fade',action:aniAction,onEnterDone:aniActionEnter,onLeaveDone:aniActionLeave}">
+            ms-effect="{is:animation,action:aniAction,onEnterDone:aniActionEnter,onLeaveDone:aniActionLeave}">
         </div>
         `,
     defaults: {
@@ -22,6 +22,7 @@ component('ms-route', {
         query: {},
         queryString: '',
         childRoute: '',
+        animation: 'fade',
         aniAction: 'leave',
         aniActionEnter() {
             console.log('ani enter');
@@ -31,8 +32,6 @@ component('ms-route', {
         },
         onInit(e) {
             var _this = this;
-
-            _this.aniAction = 'enter';
 
             var routeComp = Router.routerComponent;
             routeComp.routes[_this.path] = e.vmodel;
@@ -77,4 +76,13 @@ avalon.effect('fade', {
     leave: function(el, done) {
         $(el).fadeOut('fast', done);
     }
-})
+});
+
+avalon.effect('fade', {
+    enter: function(el, done) {
+        $(el).fadeIn('fast', done);
+    },
+    leave: function(el, done) {
+        $(el).fadeOut('fast', done);
+    }
+});

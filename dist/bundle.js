@@ -8152,10 +8152,10 @@ var Router = function () {
             var url = location.hash.slice(1) || '/';
             var index = url.indexOf('?');
             index = index < 0 ? url.length : index;
-            this.currentUrl = url.substr(0, index);
-            this.query = url.substr(index + 1, url.length) || '';
+            _this.currentUrl = url.substr(0, index);
+            _this.query = url.substr(index + 1, url.length) || '';
 
-            var urlsplits = this.currentUrl.match(/\/\w+/g),
+            var urlsplits = _this.currentUrl.match(/\/\w+/g),
                 visiblePath = '',
                 path = '';
             if (!urlsplits) return;
@@ -19145,7 +19145,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         },
         onReady: function onReady(e) {
             var _this = this;
-
             var urlsplits = _router2.default.currentUrl.match(/\/\w+/g),
                 visiblePath = '',
                 path = '';
@@ -19166,7 +19165,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
                     }
                 }
             });
-            this.visiblePath = visiblePath;
+            _this.visiblePath = visiblePath;
         },
         onViewChange: function onViewChange(e) {}
     },
@@ -19224,7 +19223,7 @@ var _router2 = _interopRequireDefault(_router);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (0, _avalon.component)('ms-route', {
-    template: '\n        <div ms-attr="{id:$id}" ms-css="styles" ms-html="visibleComponent"\n            ms-effect="{is:\'fade\',action:aniAction,onEnterDone:aniActionEnter,onLeaveDone:aniActionLeave}">\n        </div>\n        ',
+    template: '\n        <div ms-attr="{id:$id}" ms-css="styles" ms-html="visibleComponent"\n            ms-effect="{is:animation,action:aniAction,onEnterDone:aniActionEnter,onLeaveDone:aniActionLeave}">\n        </div>\n        ',
     defaults: {
         styles: {
             width: '100%',
@@ -19239,17 +19238,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         query: {},
         queryString: '',
         childRoute: '',
-        aniAction: 'enter',
+        animation: 'fade',
+        aniAction: 'leave',
         aniActionEnter: function aniActionEnter() {
-            console.log('ani finish');
+            console.log('ani enter');
         },
         aniActionLeave: function aniActionLeave() {
-            console.log('ani back');
+            console.log('ani leave');
         },
         onInit: function onInit(e) {
-            var _this2 = this;
-
             var _this = this;
+
+            _this.aniAction = 'enter';
 
             var routeComp = _router2.default.routerComponent;
             routeComp.routes[_this.path] = e.vmodel;
@@ -19260,33 +19260,37 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
                 var currCompVmodel = routeComp.routes[routeComp.visiblePath];
                 if (currCompVmodel) {
-                    if (!_this2.cached) {
+                    if (!_this.cached) {
                         currCompVmodel.visibleComponent = '';
                     }
                     currCompVmodel.visible = false;
+                    currCompVmodel.styles.display = 'none';
+                    currCompVmodel.aniAction = 'leave';
                 }
 
                 routeComp.visiblePath = _this.path;
                 _this.visible = true;
+                _this.aniAction = 'enter';
                 var vc = '<' + _this.component + ' ms-widget="{query:query,queryString:queryString}" />';
-                if (!_this2.cached) {
+                if (!_this.cached) {
                     _this.visibleComponent = vc;
                 } else if (!_this.visibleComponent) {
                     _this.visibleComponent = vc;
                 }
             });
         },
-        onReady: function onReady(e) {}
+        onReady: function onReady(e) {},
+        onDispose: function onDispose(e) {}
     },
     soleSlot: 'childRoute'
 });
 
 _avalon2.default.effect('fade', {
     enter: function enter(el, done) {
-        $(el).fadeIn();
+        $(el).fadeIn('fast', done);
     },
     leave: function leave(el, done) {
-        $(el).fadeOut();
+        $(el).fadeOut('fast', done);
     }
 });
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
