@@ -20,6 +20,13 @@ component('ms-route', {
         query: {},
         queryString: '',
         childRoute: '',
+        aniAction: 'enter',
+        aniActionEnter(){
+            console.log('ani finish');
+        },
+        aniActionLeave(){
+            console.log('ani back');
+        },
         onInit(e) {
             var _this = this;
 
@@ -30,14 +37,6 @@ component('ms-route', {
                 _this.queryString = Router.query;
                 _this.query = Router.getQuery() || {};
 
-                _this.visible = true;
-                var vc = '<' + _this.component + ' ms-widget="{query:query,queryString:queryString}" />';
-                if (!this.cached) {
-                    _this.visibleComponent = vc;
-                } else if (!_this.visibleComponent) {
-                    _this.visibleComponent = vc;
-                }
-
                 var currCompVmodel = routeComp.routes[routeComp.visiblePath];
                 if (currCompVmodel) {
                     if (!this.cached) {
@@ -47,6 +46,13 @@ component('ms-route', {
                 }
 
                 routeComp.visiblePath = _this.path;
+                _this.visible = true;
+                var vc = '<' + _this.component + ' ms-widget="{query:query,queryString:queryString}" />';
+                if (!this.cached) {
+                    _this.visibleComponent = vc;
+                } else if (!_this.visibleComponent) {
+                    _this.visibleComponent = vc;
+                }
             });
         },
         onReady(e) {
@@ -54,4 +60,13 @@ component('ms-route', {
         }
     },
     soleSlot: 'childRoute'
+})
+
+avalon.effect('fade', {
+    enter: function(el, done) {
+        $(el).fadeIn();
+    },
+    leave: function(el, done) {
+        $(el).fadeOut();
+    }
 })

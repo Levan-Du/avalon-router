@@ -39,7 +39,7 @@ component('ms-page2', {
 });
 
 component('ms-page3', {
-    template: '<div style="background: #e81;height: 100%;">page3</div>',
+    template: '<div style="background: #81f;height: 100%;">page3</div>',
     defaults: {
         query: {},
         onReady(e) {
@@ -84,6 +84,8 @@ component('ms-tab', {
     }
 })
 
+
 define({
     $id: 'app',
+    aaa: '<aaa>aaaaa</aaa>'
 });

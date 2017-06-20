@@ -17,10 +17,10 @@ class Router {
         this.currentUrl = url.substr(0, index);
         this.query = url.substr(index + 1, url.length) || '';
 
-
         var urlsplits = this.currentUrl.match(/\/\w+/g),
             visiblePath = '',
             path = '';
+        if (!urlsplits) return;
         urlsplits.forEach(el => {
             path += el;
             var cb = this.routes[path];

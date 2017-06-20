@@ -19,7 +19,7 @@ component('ms-hashrouter', {
             var urlsplits = Router.currentUrl.match(/\/\w+/g),
                 visiblePath = '',
                 path = '';
-
+            if (!urlsplits) return;
             urlsplits.forEach(el => {
                 path += el;
                 var routeVmodel = this.routes[path];

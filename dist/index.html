@@ -4,43 +4,17 @@
 <head>
     <meta charset="utf-8">
     <title>avalon</title>
-    <style type="text/css">
-    html,
-    body {
-        width: 100%;
-        height: 100%;
-    }
-    
-    * {
-        padding: 0;
-        margin: 0;
-    }
-    </style>
 </head>
 
 <body>
     <div ms-controller="app" style="height: 100%;">
         <ms-hashrouter>
-            <div style="width:200px;float: left;height: 100%;">
+            <nav style="width:200px;float: left;height: 100%;">
                 <h1>avalon</h1>
-                <ul>
-                    <li>
-                        <ms-navlink ms-widget="{to:'/page1?id=1'}">page1</ms-navlink>
-                    </li>
-                    <li>
-                        <ms-navlink ms-widget="{to:'/page2?id=2'}">page2</ms-navlink>
-                    </li>
-                    <li>
-                        <ms-navlink ms-widget="{to:'/page3/3'}">page3</ms-navlink>
-                    </li>
-                </ul>
-            </div>
+                <ms-menu></ms-menu>
+            </nav>
             <div style="overflow: hidden;height: 100%;">
-                <ul class="tab">
-                    <li class="tab-item">
-                        
-                    </li>
-                </ul>
+                <ms-tab></ms-tab>
                 <div style="height:100%;color:#fff;">
                     <ms-route ms-widget="{path:'/page1',component:'ms-page1'}"></ms-route>
                     <ms-route ms-widget="{path:'/page2',component:'ms-page2'}"></ms-route>
