@@ -1,7 +1,6 @@
 import avalon, { component } from 'avalon2';
 import Router from '../router';
 
-
 component('ms-route', {
     template: `
         <div ms-attr="{id:$id}" ms-css="styles" ms-html="visibleComponent"
@@ -27,21 +26,20 @@ component('ms-route', {
         aniActionEnter() {
 
         },
-        aniActionLeave() {
-        },
+        aniActionLeave() {},
         onInit(e) {
             var _this = this;
 
-            var routeComp = Router.routerComponent;
-            routeComp.routes[_this.path] = e.vmodel;
+            var routerComp = Router.routerComponent;
+            routerComp.routes[_this.path] = e.vmodel;
 
             Router.route(_this.path, () => {
-                var urlsplits1 = routeComp.visiblePath.match(/\/[\w-]+/g),
+                var urlsplits1 = routerComp.visiblePath.match(/\/[\w-]+/g),
                     path1 = '';
                 if (urlsplits1) {
                     urlsplits1.forEach(el => {
                         path1 += el;
-                        var routeVmodel = routeComp.routes[path1];
+                        var routeVmodel = routerComp.routes[path1];
                         if (routeVmodel) {
                             if (!routeVmodel.cached) {
                                 routeVmodel.visibleComponent = '';
@@ -53,39 +51,18 @@ component('ms-route', {
                     });
                 }
 
-                var urlsplits = Router.currentUrl.match(/\/[\w-]+/g),
-                    visiblePath = '',
-                    path = '';
-                if (!urlsplits) return;
-                urlsplits.forEach(el => {
-                    path += el;
-                    var routeVmodel = routeComp.routes[path];
-                    if (routeVmodel) {
-                        visiblePath = path;
-                        routeVmodel.queryString = Router.query;
-                        routeVmodel.query = Router.getQuery() || {};
-                        routeVmodel.visible = true;
-                        routeVmodel.aniAction = 'enter';
-                        var vc = '<' + routeVmodel.component + ' ms-widget="{query:query,queryString:queryString}" />';
-                        if (!routeVmodel.cached) {
-                            routeVmodel.visibleComponent = vc;
-                        } else if (!routeVmodel.visibleComponent) {
-                            routeVmodel.visibleComponent = vc;
-                        }
-                    }
-                });
-                routeComp.visiblePath = visiblePath;
+                this.routeCallback(routerComp);
             });
         },
-        onReady(e) {
-            var routeComp = Router.routerComponent;
+        routeCallback(routerComponent) {
+            var routerComp = routerComponent || Router.routerComponent;
             var urlsplits = Router.currentUrl.match(/\/[\w-]+/g),
                 visiblePath = '',
                 path = '';
             if (!urlsplits) return;
             urlsplits.forEach(el => {
                 path += el;
-                var routeVmodel = routeComp.routes[path];
+                var routeVmodel = routerComp.routes[path];
                 if (routeVmodel) {
                     visiblePath = path;
                     routeVmodel.queryString = Router.query;
@@ -100,26 +77,34 @@ component('ms-route', {
                     }
                 }
             });
-            routeComp.visiblePath = visiblePath;
+            routerComp.visiblePath = visiblePath;
+        },
+        onReady(e) {
+            this.routeCallback();
         },
         onDispose(e) {}
     }
 })
 
-avalon.effect('fade', {
-    enter: function(el, done) {
-        $(el).fadeIn('fast', done);
-    },
-    leave: function(el, done) {
-        $(el).fadeOut('fast', done);
-    }
-});
 
 avalon.effect('fade', {
     enter: function(el, done) {
         $(el).fadeIn('fast', done);
     },
     leave: function(el, done) {
-        $(el).fadeOut('fast', done);
+        // $(el).fadeOut('fast', done);
+        $(el).hide();
+    }
+});
+
+avalon.effect('zoomIn', {
+    enter: function(el, done) {
+        $(el).show();
+        $(el).animate({ width: '100%', height: '100%' }, 300, 'swing', () => {
+            console.log();
+        });
+    },
+    leave: function(el, done) {
+        $(el).hide();
     }
 });

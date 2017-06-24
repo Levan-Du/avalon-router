@@ -4,6 +4,8 @@ class Router {
         this.currentUrl = '';
         this.query = '';
         this.routerComponent = {};
+        this.history = [];
+        this.listeners = [];
     }
 
     route(path, callback) {
@@ -19,19 +21,30 @@ class Router {
         _this.currentUrl = url.substr(0, index);
         _this.query = url.substr(index + 1, url.length) || '';
 
-        // var urlsplits = _this.currentUrl.match(/\/[\w-]+/g),
-        //     visiblePath = '',
-        //     path = '';
-        // if (!urlsplits) return;
-        // urlsplits.forEach(el => {
-        //     path += el;
-            var cb = _this.routes[_this.currentUrl];
-            cb && cb();
-        // });
+        var cb = _this.routes[_this.currentUrl];
+        cb && cb();
+
+        if (!_this.history.some(h => _this.currentUrl === h.path)) {
+            _this.history.push({ path: _this.currentUrl, query: _this.query });
+        } else {
+            var i = _this.history.findIndex(el => el.path === _this.currentUrl);
+            _this.history[i].query = _this.query;
+        }
+
+        this.listeners.forEach(l => l())
+    }
+
+    clearHistory() {
+        this.history = [];
+        this.listeners = [];
+    }
+
+    removeHistory(path) {
+        this.history = this.history.filter(el => el.path !== path);
     }
 
     describe(listener) {
-
+        this.listeners.push(listener);
     }
 
     redirect(path) {
@@ -47,9 +60,15 @@ class Router {
         if (!this.query) {
             return {}
         };
-        var oo = {},
-            ss = this.query.split('=');
-        oo[ss[0]] = ss[1];
+
+        var result = this.query.match(new RegExp('[\?\&]?[^\?\&]+=[^\?\&]+', 'g'));
+        if (!result) return {};
+
+        var oo = {};
+        for (var i in result) {
+            var ss = result[i].split('=');
+            oo[ss[0].replace('&', '')] = ss[1];
+        }
         return oo;
     }
 }
